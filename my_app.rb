@@ -11,6 +11,7 @@ class MyApp < Sinatra::Base
   get '/' do
     user = User.new
     user.name = 'Tester1'
+    user.email = 'test.com'
     "Hello, #{user.name}!"
   end
 
