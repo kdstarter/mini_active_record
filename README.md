@@ -4,6 +4,11 @@ Coding a mini rails active_record base gem step by step
 run with:
 
 ```shell
+bundle install
+ruby db/seeds.rb
+```
+
+```shell
 ruby my_app.rb
 ```
 Or
