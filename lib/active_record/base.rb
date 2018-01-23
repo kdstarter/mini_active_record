@@ -1,3 +1,13 @@
+class BasicObject
+  def blank?
+    nil? ? true : empty?
+  end
+
+  def present?
+    !blank?
+  end
+end
+
 module ActiveRecord
   class Base
     class << self
@@ -6,12 +16,18 @@ module ActiveRecord
         subclass.extend ClassMethods
       end
     end
+
+    def initialize(attributes = {})
+      attributes.each do |attribute, value|
+        send("#{attribute}=", value)
+      end
+    end
   end
 
   module ClassMethods
     def validates(attribute, opts = {}, &validation)
       define_method "#{attribute}=" do |value|
-        if opts[:presence] == true && value == nil
+        if opts[:presence] == true && value.blank?
           puts "Error: #{attribute} must_present"
         elsif block_given? && !validation.call(value)
           puts "Error: #{attribute} invaild_attribute"

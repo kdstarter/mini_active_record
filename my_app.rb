@@ -9,10 +9,9 @@ class MyApp < Sinatra::Base
   end
 
   get '/' do
-    user = User.new
-    user.name = 'Tester1'
+    user = User.new(name: 'Tester', email: 'test@test.com')
     user.email = 'test.com'
-    "Hello, #{user.name}!"
+    "Hello, #{user.name}! (#{user.email})"
   end
 
   run! if app_file == $0
