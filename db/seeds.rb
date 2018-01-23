@@ -1,4 +1,4 @@
-require "sqlite3"
+require 'sqlite3'
 
 # Open a database
 db = SQLite3::Database.new 'my_active_record.db'
@@ -12,3 +12,6 @@ sql_create_table = <<-SQL
 SQL
 rows = db.execute sql_create_table
 puts "SQL result: #{rows == []}, #{sql_create_table}"
+
+rows = db.execute 'PRAGMA table_info(users);'
+puts "column_names: #{rows}"

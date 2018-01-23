@@ -1,3 +1,5 @@
+require 'sqlite3'
+
 class BasicObject
   def blank?
     nil? ? true : empty?
@@ -9,6 +11,7 @@ class BasicObject
 end
 
 module ActiveRecord
+
   class Base
     class << self
       def inherited(subclass)
@@ -47,6 +50,13 @@ module ActiveRecord
         define_method attribute do
           instance_variable_get "@#{attribute}"
         end
+      end
+    end
+
+    def establish_connection(opts = {})
+      define_method 'connection' do
+        connection = instance_variable_get "@connection"
+        connection || instance_variable_set("@connection", ::SQLite3::Database.new(opts[:database]))
       end
     end
   end
