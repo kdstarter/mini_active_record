@@ -14,7 +14,9 @@ class MyApp < Sinatra::Base
     user = User.new(name: 'Tester', email: 'test@test.com')
     user.email = 'test.com'
     post = Post.new(title: 'News')
-    "Hello, #{user.name}! (#{user.email}), #{user.attribute_names}, #{post.attribute_names}"
+    "Hello, #{user.name}! (#{user.email})
+      <br/> #{User.all.first.attributes},
+      <br/> #{Post.all.first.attributes}"
   end
 
   run! if app_file == $0
