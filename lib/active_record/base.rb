@@ -1,16 +1,7 @@
-require 'sqlite3'
-# autoload(:OrmMapper, './lib/active_record/orm_mapper.rb')
+require 'active_support/inflector'
+require 'active_support/core_ext/object'
 require './lib/active_record/orm_mapper.rb'
-
-class BasicObject
-  def blank?
-    nil? ? true : empty?
-  end
-
-  def present?
-    !blank?
-  end
-end
+# autoload(:OrmMapper, './lib/active_record/orm_mapper.rb')
 
 module ActiveRecord
   class Base
@@ -34,9 +25,9 @@ module ActiveRecord
     def validates(attribute, opts = {}, &validation)
       define_method "#{attribute}=" do |value|
         if opts[:presence] == true && value.blank?
-          puts "Error: #{attribute} must_present"
+          puts "\nError: #{attribute} must_present"
         elsif block_given? && !validation.call(value)
-          puts "Error: #{attribute} invaild_attribute"
+          puts "\nError: #{attribute} invaild_attribute"
         else
           instance_variable_set("@#{attribute}", value)
         end
