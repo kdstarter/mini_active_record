@@ -24,13 +24,9 @@ module ActiveRecord
   module ClassMethods
     def validates(attribute, opts = {}, &validation)
       define_method "#{attribute}=" do |value|
-        if opts[:presence] == true && value.blank?
-          puts "\nError: #{attribute} must_present"
-        elsif block_given? && !validation.call(value)
-          puts "\nError: #{attribute} invaild_attribute"
-        else
-          instance_variable_set("@#{attribute}", value)
-        end
+        instance_variable_set("@#{attribute}", value)
+        puts "\nError: #{attribute} must_present" if opts[:presence] == true && value.blank?
+        puts "\nError: #{attribute} invaild_attribute" if block_given? && !validation.call(value)
       end
     end
 

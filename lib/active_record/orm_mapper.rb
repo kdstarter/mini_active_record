@@ -1,5 +1,6 @@
 require 'sqlite3'
 require './lib/active_record/orm_query.rb'
+require './lib/active_record/persistence.rb'
 
 module ActiveRecord
   module OrmMapper
@@ -7,7 +8,8 @@ module ActiveRecord
       def included(base)
         puts "Debug: #{base} included #{self}"
         base.extend ClassMethods
-        base.extend ActiveRecord::OrmQuery::ClassMethods
+        base.extend OrmQuery::ClassMethods
+        base.extend Persistence::ClassMethods
       end
     end
   end

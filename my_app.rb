@@ -14,7 +14,7 @@ class MyApp < Sinatra::Base
   end
 
   get '/' do
-    user = User.new(name: 'Tester', email: 'test@test.com')
+    user = User.create(name: 'Tester', email: 'test@gmail.com')
     user.email = 'test.com'
     post = Post.new(title: 'News')
     "Hello, #{user.name}! (#{user.email})

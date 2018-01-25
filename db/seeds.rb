@@ -8,7 +8,7 @@ sql_create_table = <<-SQL
   CREATE TABLE IF NOT EXISTS users (
     id integer PRIMARY KEY autoincrement,
     name varchar(20),
-    email varchar(30)
+    email varchar(30) unique
   );
   CREATE TABLE IF NOT EXISTS posts (
     id integer PRIMARY KEY autoincrement,
@@ -26,8 +26,8 @@ rows = db.execute 'PRAGMA table_info(posts);'
 puts "column_names: #{rows}"
 
 sql_insert_rows = <<-SQL
-  INSERT INTO users ('id', 'name', 'email') VALUES(1, 'Tester', 'test@test.com');
-  INSERT INTO posts VALUES(2, 1, 'News', 'Please review the followings...')
+  INSERT INTO users ('name', 'email') VALUES ('Tester', 'test@test.com');
+  INSERT INTO posts VALUES (2, 1, 'News', 'Please review the followings...')
 SQL
 sql_insert_rows.split(';').each do |sql|
   rows = db.execute sql
