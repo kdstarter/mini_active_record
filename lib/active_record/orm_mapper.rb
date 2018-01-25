@@ -1,4 +1,5 @@
 require 'sqlite3'
+require './lib/active_record/orm_query.rb'
 
 module ActiveRecord
   module OrmMapper
@@ -6,6 +7,7 @@ module ActiveRecord
       def included(base)
         puts "Debug: #{base} included #{self}"
         base.extend ClassMethods
+        base.extend ActiveRecord::OrmQuery::ClassMethods
       end
     end
   end
@@ -37,24 +39,8 @@ module ActiveRecord
       class_variable_get :@@column_names
     end
 
-    def all
-      models = []
-      sql_query = "SELECT * FROM #{self.to_s.underscore.pluralize}"
-      puts "Debug SQL select_all: #{sql_query}"
-      rows = connection.execute(sql_query)
-      
-      rows.each do |row|
-        tmp_model = self.new
-        row.each_with_index do |attr_val, index|
-          func_name = "#{attribute_names[index]}="
-          tmp_model.send(func_name, attr_val) if tmp_model.respond_to? func_name
-        end
-        models.push tmp_model
-      end
-      models
-    end
-
     private
+
     def _init_connection(opts)
       # self.superclass --> ActiveRecord::Base
       if self.superclass.class_variables.include?(:@@connection)
