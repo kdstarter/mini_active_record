@@ -1,7 +1,7 @@
 require 'sqlite3'
 
 # Open a database
-db = SQLite3::Database.new 'my_active_record.db'
+db = SQLite3::Database.new 'mini_active_record.db'
 
 # Create a table
 sql_create_table = <<-SQL
