@@ -1,8 +1,5 @@
-# require './lib/active_record/base.rb'
-autoload(:ActiveRecord, './lib/active_record/base.rb')
-
 class User < ActiveRecord::Base
-  establish_connection database: MyApp.settings.database_name
+  establish_connection database: MyApp.settings.database_name, adapter: :sqlite3
   attr_accessor :id, :name, :email
 
   validates :name, presence: true

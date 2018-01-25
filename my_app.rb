@@ -1,7 +1,9 @@
 require 'byebug'
 require 'sinatra/base'
 require 'sinatra/reloader'
-# require './app/models/user.rb'
+
+# require 'active_record'
+autoload(:ActiveRecord, './lib/active_record/base.rb')
 autoload(:User, './app/models/user.rb')
 autoload(:Post, './app/models/post.rb')
 
