@@ -45,7 +45,7 @@ module ActiveRecord
             model.send(func_name, attr_val) if model.respond_to? func_name
           end
         end
-        raise "Error model_not_found by `#{sql}`" if opts[:raise_error] && model.blank?
+        ActiveRecordError.new(key: :model_not_found, detail: "by `#{sql}`", raise_error: opts[:raise_error]) if model.blank?
         model
       end
 
@@ -77,7 +77,7 @@ module ActiveRecord
         elsif query.is_a? String
           sql = "#{sql} WHERE #{query}"
         else
-          puts "Error SQL: #{query}"
+          ActiveRecordError.new(key: :invalid_sql, detail: "by `#{sql}`")
         end
 
         sql = "#{sql} #{limit}" if limit.present?

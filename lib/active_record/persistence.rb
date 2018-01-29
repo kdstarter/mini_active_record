@@ -2,30 +2,28 @@ module ActiveRecord
   module Persistence
     module ClassMethods 
       def create(attributes = nil)
-        model, _ = _create(attributes)
-        model
+        _create(attributes)
       end
 
       def create!(attributes = nil)
-        model, error = _create(attributes)
-        raise error if error.present?
+        _create(attributes, true)
       end
 
       private
-      def _create(attributes)
+      def _create(attributes, raise_error = false)
         model = new(attributes)
 
         sql_attrs = attributes.keys.collect {|key| "\'#{key}\'"}.join(',')
         sql_values = attributes.values.collect {|key| "\'#{key}\'"}.join(',')
         sql = "INSERT INTO users (#{sql_attrs}) VALUES (#{sql_values})"
-        puts "Debug SQL: #{sql}"
+        puts "Debug SQL: `#{sql}`"
 
         begin
           rows = connection.execute(sql)
-          [model, '']
+          model
         rescue Exception => e
-          puts "Error SQL: #{e.inspect}"
-          [new, e.inspect]
+          ActiveRecordError.new(key: :failed_create, detail: e.inspect, raise_error: raise_error)
+          new
         end
       end
     end

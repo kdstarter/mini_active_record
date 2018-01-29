@@ -1,5 +1,6 @@
 require 'active_support/inflector'
 require 'active_support/core_ext/object'
+require './lib/active_record/active_record_error.rb'
 require './lib/active_record/orm_mapper.rb'
 # autoload(:OrmMapper, './lib/active_record/orm_mapper.rb')
 
@@ -25,8 +26,8 @@ module ActiveRecord
     def validates(attribute, opts = {}, &validation)
       define_method "#{attribute}=" do |value|
         instance_variable_set("@#{attribute}", value)
-        puts "\nError: #{attribute} must_present" if opts[:presence] == true && value.blank?
-        puts "\nError: #{attribute} invaild_attribute" if block_given? && !validation.call(value)
+        ActiveRecordError.new(attribute: attribute, key: :must_present) if opts[:presence] == true && value.blank?
+        ActiveRecordError.new(attribute: attribute, key: :invaild_attribute) if block_given? && !validation.call(value)
       end
     end
 
