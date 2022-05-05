@@ -20,6 +20,24 @@ module ActiveRecord
         send("#{attribute}=", value)
       end
     end
+
+    def method_missing(method_name, *params, &block)
+      if method_name.to_s.in?(self.class.attribute_names)
+        self.class.class_eval do
+          puts "--- define_method: #{self.name}.#{method_name} ---"
+          define_method method_name do
+            instance_variable_get "@#{method_name}"
+          end
+
+          define_method "#{method_name}=" do |value|
+            instance_variable_set("@#{method_name}", value)
+          end
+        end
+        self.send(method_name)
+      else
+        super
+      end
+    end
   end
 
   module ClassMethods

@@ -1,6 +1,5 @@
 class Post < ActiveRecord::Base
-  establish_connection database: MyApp.settings.database_name, adapter: :sqlite3
-  attr_accessor :user_id, :title, :content
+  establish_connection MyApp.settings.database_config
 
   validates :user_id, presence: true
   validates :title, presence: true

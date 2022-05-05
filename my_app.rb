@@ -9,7 +9,7 @@ autoload(:Post, './app/models/post.rb')
 
 class MyApp < Sinatra::Base
   configure :development do
-    set :database_name, 'mini_active_record.db'
+    set :database_config, { database: 'mini_active_record.db', adapter: :sqlite3 }
     register Sinatra::Reloader
   end
 

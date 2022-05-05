@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'mini_active_record'
-  s.version     = '1.0.0'
+  s.version     = '1.0.1'
   s.license     = 'MIT'
   s.date        = '2018-01-22'
   s.summary     = 'A active_record base gem'
