@@ -14,12 +14,12 @@ class MyApp < Sinatra::Base
   end
 
   get '/' do
-    user = User.create(name: 'Tester', email: 'test@gmail.com')
+    user = User.find_or_create_by!(name: 'Tester', email: 'test@gmail.com')
     user.email = 'test.com'
     post = Post.new(title: 'News')
     "Hello, #{user.name}! (#{user.email})
-      <br/> #{User.all.first.attributes},
-      <br/> #{Post.all.first.attributes}"
+      <br/>Create a user: #{User.first.attributes},
+      <br/>New a post: #{Post.first.attributes}"
   end
 
   run! if app_file == $0

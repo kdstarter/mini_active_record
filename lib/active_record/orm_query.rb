@@ -2,11 +2,11 @@ module ActiveRecord
   module OrmQuery
     module ClassMethods
       def find_by(query)
-        _query_model(query: _to_filter_id(query), raise_error: false)
+        _query_model(query: _to_filter_column(query), raise_error: false)
       end
 
-      def find(query)
-        _query_model(query: _to_filter_id(query), raise_error: true)
+      def find(id)
+        _query_model(query: _to_filter_column(id, 'id'), raise_error: true)
       end
 
       def first
@@ -22,11 +22,11 @@ module ActiveRecord
       end
 
       private
-      def _to_filter_id(query)
+      def _to_filter_column(query, column = 'id')
         if query.is_a?(Integer)
-          "id=#{query}"
+          "#{column}=#{query}"
         elsif query.is_a?(String)
-          "id=\"#{query}\""
+          "#{column}=\"#{query}\""
         else
           query
         end
@@ -69,10 +69,10 @@ module ActiveRecord
         query = opts[:query]
         limit = opts[:limit]
         sql = "SELECT * FROM #{self.to_s.underscore.pluralize}"
-        if query.blank?
 
+        if query.blank?
         elsif query.is_a? Hash
-          sql_conditions = query.map{|k,v| "#{k}=#{v}"}.join(' AND ')
+          sql_conditions = query.map{|k,v| _to_filter_column(v, k)}.join(' AND ')
           sql = "#{sql} WHERE #{sql_conditions}"
         elsif query.is_a? String
           sql = "#{sql} WHERE #{query}"

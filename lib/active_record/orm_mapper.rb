@@ -6,7 +6,7 @@ module ActiveRecord
   module OrmMapper
     class << self
       def included(base)
-        puts "Debug: #{base} included #{self}"
+        puts "Debug model: #{base} included #{self}"
         base.extend ClassMethods
         base.extend OrmQuery::ClassMethods
         base.extend Persistence::ClassMethods
@@ -47,7 +47,7 @@ module ActiveRecord
       # self.superclass --> ActiveRecord::Base
       if self.superclass.class_variables.include?(:@@connection)
         connection = self.superclass.class_variable_get :@@connection
-        puts "Debug connection: #{connection.inspect}"
+        puts "Debug DB connected"
       else
         connection = self.superclass.class_variable_set(:@@connection, ::SQLite3::Database.new(opts[:database]))
         puts "Debug new connection: #{connection.inspect}"
@@ -61,6 +61,7 @@ module ActiveRecord
       puts "Debug SQL table_info: `#{sql_query}`"
       column_names = connection.execute(sql_query).map { |array| array[1] }
       class_variable_set(:@@column_names, column_names)
+      puts "Debug #{self.to_s} column_names: #{column_names}"
     end
   end
 end

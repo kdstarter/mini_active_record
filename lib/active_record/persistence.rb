@@ -1,11 +1,19 @@
 module ActiveRecord
   module Persistence
-    module ClassMethods 
-      def create(attributes = nil)
+    module ClassMethods
+      def find_or_create_by(attributes, options = {})
+        find_by(attributes) || create(attributes.merge(options))
+      end
+
+      def find_or_create_by!(attributes, options = {})
+        find_by(attributes) || create!(attributes.merge(options))
+      end
+
+      def create(attributes = {})
         _create(attributes)
       end
 
-      def create!(attributes = nil)
+      def create!(attributes = {})
         _create(attributes, true)
       end
 
@@ -15,7 +23,7 @@ module ActiveRecord
 
         sql_attrs = attributes.keys.collect {|key| "\'#{key}\'"}.join(',')
         sql_values = attributes.values.collect {|key| "\'#{key}\'"}.join(',')
-        sql = "INSERT INTO users (#{sql_attrs}) VALUES (#{sql_values})"
+        sql = "INSERT INTO #{self.to_s.underscore.pluralize} (#{sql_attrs}) VALUES (#{sql_values})"
         puts "Debug SQL: `#{sql}`"
 
         begin

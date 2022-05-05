@@ -10,7 +10,7 @@ module ActiveRecord
 
     class << self
       def inherited(subclass)
-        puts "Debug: #{subclass} inherited #{self}"
+        puts "\nDebug model: #{subclass} inherited #{self}"
         subclass.extend ClassMethods
       end
     end
